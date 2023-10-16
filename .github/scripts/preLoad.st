@@ -1,1 +1,1 @@
-Iceberg remoteTypeSelector: #httpsUrl
+Iceberg remoteTypeSelector: #httpsUrl.
