@@ -34,7 +34,7 @@ getContents := STONJSON fromString: getResponse entity contents.
 downloads := (getContents at: #assets) sumNumbers: [ :each |
                  each at: #download_count ].
 
-downloads isZero ifTrue: [
+( downloads isZero and: [ Date today monthIndex = 1 and: [ Date today day < 3 ] ] ) ifTrue: [
     ^ 'No downloads of last nightly build - nothing to upload' ].
 
 text := String streamContents: [ :s |
