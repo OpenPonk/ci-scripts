@@ -12,7 +12,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   VERSION: ${{ github.event.release.tag_name }}
   RUN_ID: ${{ github.run_id }}
-  PHARO_VERSION: 11
+  PHARO_VERSION: 12
   
 jobs:
   build-win:

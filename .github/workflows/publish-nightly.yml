@@ -20,7 +20,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   VERSION: 'nightly'
   RUN_ID: ${{ github.run_id }}
-  PHARO_VERSION: 11
+  PHARO_VERSION: 12
   cache-name: zip-cache
 
 jobs:

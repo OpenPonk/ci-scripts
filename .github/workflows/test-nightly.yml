@@ -18,7 +18,7 @@ env:
   VERSION: 'nightly'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   RUN_ID: ${{ github.run_id }}
-  PHARO_VERSION: 11
+  PHARO_VERSION: 12
 
 jobs:
 
