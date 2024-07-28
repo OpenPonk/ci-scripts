@@ -29,7 +29,7 @@ start `"`" `"%~dp0Pharo\Pharo.exe`" `"%~dp0image\$PROJECT_NAME.image`"" | set-co
 
 "# Installation and Opening
 
-Make sure you do not put OpenPonk directory in a path with non-ASCII chars (like š,ý,ü etc.), otherwise it would not open.
+Make sure you do not put OpenPonk directory in a path with non-ASCII chars (like š,ý,ü,通,Ф etc.), otherwise it would not open.
 
 Open using $PROJECT_NAME.bat.
 
