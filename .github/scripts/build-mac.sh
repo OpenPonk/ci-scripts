@@ -5,7 +5,6 @@ set -euxo pipefail
 ci_build_dir=$SMALLTALK_CI_BUILD
 package_dir="$PROJECT_NAME-$PLATFORM"
 vm_dir=`cat $SMALLTALK_CI_VM | sed 's|\(.*\)/.*|\1|'`/pharo-vm
-package_dir_arm="$PROJECT_NAME-$PLATFORM-ARM"
 
 mkdir -p "$package_dir/image"
 
@@ -47,14 +46,3 @@ cat "ci-scripts/.github/scripts/readmecommon.txt" >> "$package_dir/README.txt"
 $vm_dir/Pharo.app/Contents/MacOS/Pharo --headless $package_dir/image/$PROJECT_NAME.image eval --save "OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'"
 
 ditto -ck --keepParent --rsrc $package_dir $PROJECT_NAME-$PLATFORM-$VERSION.zip
-
-# ARM variant
-mkdir -p "$package_dir_arm"
-
-ditto "$package_dir" "$package_dir_arm"
-rm -rf "$package_dir_arm/Pharo.app"
-
-wget "https://files.pharo.org/get-files/${PHARO_VERSION}0/pharo-vm-Darwin-arm64-stable.zip"
-ditto -xk pharo-vm-Darwin-arm64-stable.zip "$package_dir_arm"
-
-ditto -ck --keepParent --rsrc $package_dir_arm $PROJECT_NAME-$PLATFORM-ARM-$VERSION.zip

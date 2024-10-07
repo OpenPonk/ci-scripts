@@ -96,11 +96,11 @@ jobs:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
 
-  build-mac:
-    runs-on: macos-latest
+  build-mac-intel:
+    runs-on: macos-13
     env:
-      PLATFORM: mac
-    name: 'Build Mac'
+      PLATFORM: mac-intel
+    name: 'Build Mac Intel'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.0
@@ -137,7 +137,48 @@ jobs:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
 
-  check-linux-cache:
+  build-mac-m1:
+    runs-on: macos-14
+    env:
+      PLATFORM: mac-m1
+    name: 'Build Mac M1'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.0
+      - name: Prepare scripts directory
+        run: mkdir ci-scripts
+      - name: Checkout scripts
+        uses: actions/checkout@v4.1.0
+        with:
+          repository: OpenPonk/ci-scripts
+          path: ci-scripts
+      - name: Load SmalltalkCI environment
+        uses: hpi-swa/setup-smalltalkCI@1.3.4
+        id: smalltalkci
+        with:
+          smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
+      - name: Prepare image and test
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        shell: bash
+        timeout-minutes: 12
+      - name: Prepare zip script
+        run: chmod u+x ci-scripts/.github/scripts/build-mac.sh
+      - name: Create zip
+        run: ci-scripts/.github/scripts/build-mac.sh
+        env: 
+          ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+      - name: Cache Intel zip
+        uses: actions/cache/save@v3.3.2
+        with:
+          path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
+          key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
+      - name: Cache ARM zip
+        uses: actions/cache/save@v3.3.2
+        with:
+          path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
+          key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
+
+  check-cache-linux:
     needs: build-linux
     runs-on: ubuntu-latest
     name: 'Check Linux zip is created'
@@ -154,12 +195,12 @@ jobs:
         if: steps.get-zip.outputs.cache-hit != 'true'
         run: exit 1
 
-  check-mac-intel-cache:
-    needs: build-mac
+  check-cache-mac-intel:
+    needs: build-mac-intel
     runs-on: ubuntu-latest
     name: 'Check Mac Intel zip is created'
     env:     
-      PLATFORM: mac
+      PLATFORM: mac-intel
     steps:
       - name: Get zip from cache
         id: get-zip
@@ -171,12 +212,12 @@ jobs:
         if: steps.get-zip.outputs.cache-hit != 'true'
         run: exit 1
 
-  check-mac-arm-cache:
-    needs: build-mac
+  check-cache-mac-m1:
+    needs: build-mac-m1
     runs-on: ubuntu-latest
-    name: 'Check Mac ARM zip is created'
+    name: 'Check Mac M1 zip is created'
     env:     
-      PLATFORM: mac-ARM
+      PLATFORM: mac-m1
     steps:
       - name: Get zip from cache
         id: get-zip
@@ -188,7 +229,7 @@ jobs:
         if: steps.get-zip.outputs.cache-hit != 'true'
         run: exit 1
 
-  check-win-cache:
+  check-cache-win:
     needs: build-win
     runs-on: ubuntu-latest
     name: 'Check Windows zip is created'
@@ -208,7 +249,7 @@ jobs:
 
 
   save-stats:
-    needs: [check-win-cache, check-linux-cache, check-mac-intel-cache, check-mac-arm-cache]
+    needs: [check-cache-win, check-cache-linux, check-cache-mac-intel, check-cache-mac-m1]
     runs-on: ubuntu-latest
     name: 'Save dl stats of previous build'
     env:
@@ -250,7 +291,7 @@ jobs:
           prerelease: true
           title: "nightly"
 
-  upload-win-zip:
+  upload-zip-win:
     needs: create-release
     runs-on: ubuntu-latest
     name: 'Upload Windows zip'
@@ -278,7 +319,7 @@ jobs:
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
-  upload-linux-zip:
+  upload-zip-linux:
     needs: create-release
     runs-on: ubuntu-latest
     name: 'Upload Linux zip'
@@ -305,12 +346,12 @@ jobs:
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
-  upload-mac-intel-zip:
+  upload-zip-mac-intel:
     needs: create-release
     runs-on: ubuntu-latest
     name: 'Upload Mac Intel zip'
     env:
-      PLATFORM: mac
+      PLATFORM: mac-intel
     steps:
       - name: Get zip from cache
         id: get-zip
@@ -332,12 +373,12 @@ jobs:
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
-  upload-mac-arm-zip:
+  upload-zip-mac-m1:
     needs: create-release
     runs-on: ubuntu-latest
-    name: 'Upload Mac ARM zip'
+    name: 'Upload Mac M1 zip'
     env:
-      PLATFORM: mac-ARM
+      PLATFORM: mac-m1
     steps:
       - name: Get zip from cache
         id: get-zip
