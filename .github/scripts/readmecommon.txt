@@ -2,9 +2,9 @@
 
 OpenPonk application is implemented in Pharo programming environment that can be described as a programming OS running in a VirtualBox-like virtual machine.
 In the OpenPonk application, you may open multiple OpenPonk windows, each representing an OpenPonk project.
-In each OP project, you may have multiple independent models.
+In each OpenPonk project, you may have multiple independent models.
 Models alone contain elements, their properties and relations and do not have any information about visual representation.
-Diagrams are those visual representation. One model can have many diagram representations and these diagrams may only show small part of a model.
+Diagrams are those visual representations. One model can have many diagram representations and these diagrams may only show small part of a model.
 
 When you add new elements, delete them or change their properties, you change not only the current diagram, but also the model used for all the diagrams of the same model.
 If you wish to omit (hide) some elements from a diagram, but keep them in the model (and possibly other diagrams), use Hide menu items. To show them again, use Show.
@@ -19,19 +19,22 @@ There are two independent saving systems. Option 1 is more convenient on a singl
 
 	How to save this way (2 alternatives):
 		- In very top toolbar > Pharo > Save (or Save and Quit)
+		or
 		- When attempting to close the OP app window, it asks if you want to save changes. Picking Save does exactly this kind of save.
 
 	How to load this kind of save:
 		- Just open OpenPonk application again
 
 2) Saving a single project:
-	You may save a single project to an .opp (OpenPonk Project) file, which is a zip file with various json/xml files with project metadata, models, diagrams etc.
+	You may save a single project to an .opp (OpenPonk Project) file, which is a zip file with various json/xml/ other text files with project metadata, models, diagrams etc.
 
 	How to save this way:
 		- In OpenPonk project's sub-window > Project > Save Project
 
-	How to load this kind of save:
+	How to load this kind of save (2 alternatives):
 		- In very top toolbar > OpenPonk > Open Project...
+		or
+		- Drag and drop the .opp file onto the window of running OpenPonk (if it is supported by your OS / file browser)
 
 # Settings
 
