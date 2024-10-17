@@ -130,21 +130,13 @@ jobs:
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
-      - name: Upload Intel zip
-        id: upload-zip-intel
+      - name: Upload zip
+        id: upload-zip
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
-          asset_content_type: application/zip
-      - name: Upload ARM zip
-        id: upload-zip-arm
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
-          asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
   build-mac-m1:
@@ -181,18 +173,10 @@ jobs:
         id: get_release
         uses: bruceadams/get-release@v1.3.2
       - name: Upload Intel zip
-        id: upload-zip-intel
+        id: upload-zip
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
-          asset_content_type: application/zip
-      - name: Upload ARM zip
-        id: upload-zip-arm
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
-          asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-ARM-${{ env.VERSION }}.zip
           asset_content_type: application/zip
