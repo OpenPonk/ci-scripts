@@ -30,7 +30,7 @@ It means all the files have attribute com.apple.quarantine that has to be remove
 
 1) Open Terminal
 2) Navigate to the directory with openponk-plugins (Unix executable script)
-3) Run `xattr -d com.apple.quarantine openponk-plugins`
+3) Run: 'xattr -d com.apple.quarantine openponk-plugins'
 4) Double click $PROJECT_NAME (Unix executable script)
 
 The $PROJECT_NAME script should remove the quarantine attribute from all the other files and open the OpenPonk application.
