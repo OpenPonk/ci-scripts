@@ -23,21 +23,22 @@ EOF
 chmod a+rx $package_dir/$PROJECT_NAME
 
 cat << EOF > $package_dir/README.txt
+# Installation
 
-# Installation and Opening
+OpenPonk scripts are not signed and when you download OpenPonk, all the files become quarantined.
+It means all the files have attribute com.apple.quarantine that has to be removed. To do that:
 
-OpenPonk scripts are not signed and when you download OpenPonk, it is quarantined. 
-To overcome this, you cannot open OpenPonk with simple double click first time.
+1) Open Terminal
+2) Navigate to the directory with openponk-plugins (Unix executable script)
+3) Run `xattr -d com.apple.quarantine openponk-plugins`
+4) Double click $PROJECT_NAME (Unix executable script)
 
-First time opening (or after updating OP):
-	1) Right click the $PROJECT_NAME (Unix executable)
-	2) Open
-	-> Confirmation dialog appears with Cancel and Open buttons
-	3) Open
-	4) If you are not an administrator, login dialog opens. Log in as admin and confirm the dialog
-	-> OpenPonk should open now. If there is a window asking to receive keystrokes, you may Deny it
-Next time opening:
-	1) Double click $PROJECT_NAME (Unix executable)
+The $PROJECT_NAME script should remove the quarantine attribute from all the other files and open the OpenPonk application.
+If there is a window asking to receive keystrokes, you may Deny it
+
+# Opening
+
+1) Double click $PROJECT_NAME (Unix executable script)
 
 EOF
 
