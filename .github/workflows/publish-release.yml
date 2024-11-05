@@ -22,11 +22,11 @@ jobs:
     name: 'Build Windows and upload zip'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: md ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -62,11 +62,11 @@ jobs:
     name: 'Build Linux and upload zip'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -104,11 +104,11 @@ jobs:
     name: 'Build Mac Intel and upload zip'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -146,11 +146,11 @@ jobs:
     name: 'Build Mac M1 and upload zip'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts

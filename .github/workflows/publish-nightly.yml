@@ -32,11 +32,11 @@ jobs:
     name: 'Build Windows'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: md ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -54,7 +54,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v3.3.2
+        uses: actions/cache/save@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -67,11 +67,11 @@ jobs:
     name: 'Build Linux'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -91,7 +91,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v3.3.2
+        uses: actions/cache/save@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -103,11 +103,11 @@ jobs:
     name: 'Build Mac Intel'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -127,7 +127,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v3.3.2
+        uses: actions/cache/save@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -139,11 +139,11 @@ jobs:
     name: 'Build Mac M1'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -163,7 +163,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v3.3.2
+        uses: actions/cache/save@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -177,7 +177,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -194,7 +194,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -211,7 +211,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -228,7 +228,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -246,17 +246,17 @@ jobs:
       PLATFORM: linux
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -290,7 +290,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -318,7 +318,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -345,7 +345,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -372,7 +372,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -399,7 +399,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Check list of repositories exists
         id: check-file
         run: test -f ./.github/dependent-repositories.txt || exit 1
@@ -416,7 +416,7 @@ jobs:
       matrix: ${{fromJson(needs.create-dependent-matrix.outputs.matrix)}}
     steps:
       - name: Start ${{ matrix.repository }} build
-        uses: benc-uk/workflow-dispatch@v1.2.2
+        uses: benc-uk/workflow-dispatch@v1.2.4
         with:
           workflow: Nightly
           repo: ${{ matrix.repository }}
