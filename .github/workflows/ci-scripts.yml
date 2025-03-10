@@ -18,7 +18,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.2.2
       - name: Check list of repositories exists
         id: check-file
         run: test -f ./.github/dependent-repositories.txt || exit 1
@@ -35,7 +35,7 @@ jobs:
       matrix: ${{fromJson(needs.create-dependent-matrix.outputs.matrix)}}
     steps:
       - name: Start ${{ matrix.repository }} build
-        uses: benc-uk/workflow-dispatch@v1.2.2
+        uses: benc-uk/workflow-dispatch@v1.2.4
         with:
           workflow: Nightly
           repo: ${{ matrix.repository }}

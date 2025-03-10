@@ -54,7 +54,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v4.1.2
+        uses: actions/cache/save@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -91,7 +91,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v4.1.2
+        uses: actions/cache/save@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -127,7 +127,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v4.1.2
+        uses: actions/cache/save@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -163,7 +163,7 @@ jobs:
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
       - name: Cache zip
-        uses: actions/cache/save@v4.1.2
+        uses: actions/cache/save@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -177,7 +177,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -194,7 +194,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -211,7 +211,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -228,7 +228,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -249,7 +249,7 @@ jobs:
         uses: actions/checkout@v4.2.2
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -290,7 +290,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -318,7 +318,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -345,7 +345,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -372,7 +372,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.1.2
+        uses: actions/cache/restore@v4.2.2
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
