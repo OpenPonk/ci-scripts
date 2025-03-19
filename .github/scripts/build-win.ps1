@@ -45,7 +45,13 @@ Get-Content -Path "ci-scripts\.github\scripts\readmecommon.txt" | Add-Content -P
 
 echo "Saving OPVersion..."
 
-& $vm_dir/PharoConsole.exe -headless $package_dir/image/$PROJECT_NAME.image eval --save "OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'"
+& $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "|version| version := OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'. 'version-saved.txt' asFileReference ensureCreateFile. version"
+
+while (!(Test-Path -Path "version-saved.txt" -PathType Leaf)){
+    sleep 1
+}
+
+Remove-Item -Path "version-saved.txt"
 
 echo "Packaging zip archive..."
 
