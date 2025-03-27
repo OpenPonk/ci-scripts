@@ -20,7 +20,7 @@ There are two independent saving systems: saving entire OpenPonk environment and
 	How to save this way (2 alternatives):
 		- In very top toolbar > Pharo > Save (or Save and Quit)
 		or
-		- When attempting to close the OP app window, it asks if you want to save changes. Picking Save does exactly this kind of save.
+		- When attempting to close the OP app window, it asks if you want to save or discard changes. Picking Save does exactly this kind of save.
 
 	How to load this kind of save:
 		- Just open OpenPonk application again
@@ -57,3 +57,6 @@ Delete element:	Delete (with confirmation dialog) or Shift + Delete (without con
 Hide element:	Ctrl + H
 Save OpenPonk environment (first saving option): Ctrl + Shift + S
 
+# Common issues
+
+- If the OpenPonk stops responding to any user input, you may try pressing Alt + . a few times, which attempts to pause ongoing infinite loop / recursion. Do not use numerical keyboard for the dot.

@@ -33,8 +33,6 @@ start `"`" `"%~dp0Pharo\Pharo.exe`" `"%~dp0image\$PROJECT_NAME.image`"" | set-co
 
 "# Installation and Opening
 
-Make sure you do not put OpenPonk directory in a path with non-ASCII chars (like š,ý,ü,通,Ф etc.), otherwise it would not open.
-
 Open using $PROJECT_NAME.bat.
 
 Opening may take several seconds. If OpenPonk becomes unresponsive almost immediately and keeps increasing memory usage quickly, try opening by right-clicking $PROJECT_NAME.ps1 and `"Run with powershell`"
@@ -45,13 +43,7 @@ Get-Content -Path "ci-scripts\.github\scripts\readmecommon.txt" | Add-Content -P
 
 echo "Saving OPVersion..."
 
-& $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "|version| version := OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'. 'version-saved.txt' asFileReference ensureCreateFile. version"
-
-while (!(Test-Path -Path "version-saved.txt" -PathType Leaf)){
-    sleep 1
-}
-
-Remove-Item -Path "version-saved.txt"
+& $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'"
 
 echo "Packaging zip archive..."
 
