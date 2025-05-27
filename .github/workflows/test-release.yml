@@ -9,7 +9,7 @@ env:
   VERSION: ${{ github.event.release.tag_name }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   RUN_ID: ${{ github.run_id }}
-  PHARO_VERSION: 12
+  PHARO_VERSION: 13
   
 jobs:
   test-linux:
