@@ -4,10 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       build-dependent:
-        description: 'Should build dependent repositories? (true/false)'
+        description: 'Should build dependent repositories?'
         required: false
         default: false
+        type: boolean
   workflow_call:
+    inputs:
+      build-dependent:
+        description: 'Should build dependent repositories?'
+        required: false
+        default: false
+        type: boolean
     secrets:
       WORKFLOW_ACCESS_TOKEN:
         required: true
@@ -394,24 +401,58 @@ jobs:
     needs: [create-release]
     runs-on: ubuntu-latest
     name: 'Find dependent repositories'
-    if: ${{ github.event_name == 'push' || contains(github.event.inputs.build-dependent || false, 'true') }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_dependents: ${{ steps.set-matrix.outputs.has_dependents }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Check list of repositories exists
-        id: check-file
-        run: test -f ./.github/dependent-repositories.txt || exit 1
-      - name: Create dependent build matrix
-        id: set-matrix
-        run: echo "::set-output name=matrix::`cat ./.github/dependent-repositories.txt | tr -d " \t\n\r"`"
 
+      - name: Create dependent build matrix (or empty)
+        id: set-matrix
+        shell: bash
+        run: |
+          BUILD_DEPENDENT="${{ inputs.build-dependent || github.event.inputs.build-dependent || 'false' }}"
+          EVENT="${{ github.event_name }}"
+
+          if [[ "$EVENT" != "push" && "$EVENT" != "schedule" && "$EVENT" != "workflow_dispatch" && "$EVENT" != "workflow_call" ]]; then
+            echo "Dependent builds: disabled: unsupported event=$EVENT"
+            echo "has_dependents=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ ( "$EVENT" == "workflow_dispatch" || "$EVENT" == "workflow_call" ) && "$BUILD_DEPENDENT" != "true" ]]; then
+            echo "Dependent builds: disabled: build-dependent input is false"
+            echo "has_dependents=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ ! -f ./.github/dependent-repositories.txt ]]; then
+            echo "Dependent builds: disabled: dependent-repositories.txt not found"
+            echo "has_dependents=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          count="$(jq -e '.include | if type=="array" then length else error(".include must be an array") end' ./.github/dependent-repositories.txt)"
+          if [[ "$count" == "0" ]]; then
+            echo "Dependent builds: disabled: dependent-repositories.txt empty"
+            echo "has_dependents=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          matrix="$(jq -c '.' ./.github/dependent-repositories.txt)"
+          echo "Dependent builds: enabled"
+          echo "has_dependents=true" >> "$GITHUB_OUTPUT"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
   build-dependent:
     needs: [create-dependent-matrix]
     runs-on: ubuntu-latest
     name: 'Build dependent'
-    if: ${{ contains(needs.create-dependent-matrix.outputs.matrix, '/') }}
+    if: ${{ needs.create-dependent-matrix.outputs.has_dependents == 'true' }}
     strategy:
       matrix: ${{fromJson(needs.create-dependent-matrix.outputs.matrix)}}
     steps:
