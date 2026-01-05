@@ -97,7 +97,7 @@ jobs:
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
 
   build-mac-intel:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     env:
       PLATFORM: mac-intel
     name: 'Build Mac Intel'
@@ -132,11 +132,11 @@ jobs:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
 
-  build-mac-m1:
-    runs-on: macos-14
+  build-mac-arm:
+    runs-on: macos-latest
     env:
-      PLATFORM: mac-m1
-    name: 'Build Mac M1'
+      PLATFORM: mac-arm
+    name: 'Build Mac ARM'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
@@ -202,12 +202,12 @@ jobs:
         if: steps.get-zip.outputs.cache-hit != 'true'
         run: exit 1
 
-  check-cache-mac-m1:
-    needs: build-mac-m1
+  check-cache-mac-arm:
+    needs: build-mac-arm
     runs-on: ubuntu-latest
-    name: 'Check Mac M1 zip is created'
+    name: 'Check Mac ARM zip is created'
     env:     
-      PLATFORM: mac-m1
+      PLATFORM: mac-arm
     steps:
       - name: Get zip from cache
         id: get-zip
@@ -239,7 +239,7 @@ jobs:
 
 
   save-stats:
-    needs: [check-cache-win, check-cache-linux, check-cache-mac-intel, check-cache-mac-m1]
+    needs: [check-cache-win, check-cache-linux, check-cache-mac-intel, check-cache-mac-arm]
     runs-on: ubuntu-latest
     name: 'Save dl stats of previous build'
     env:
@@ -363,12 +363,12 @@ jobs:
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
-  upload-zip-mac-m1:
+  upload-zip-mac-arm:
     needs: create-release
     runs-on: ubuntu-latest
-    name: 'Upload Mac M1 zip'
+    name: 'Upload Mac ARM zip'
     env:
-      PLATFORM: mac-m1
+      PLATFORM: mac-arm
     steps:
       - name: Get zip from cache
         id: get-zip
