@@ -53,12 +53,18 @@ cat "ci-scripts/.github/scripts/readmecommon.txt" >> "$package_dir/README.txt"
 chmod a+rx $package_dir/$PROJECT_NAME $package_dir/$PROJECT_NAME-pharo-ui
 
 "$vm_dir/bin/pharo" --headless $package_dir/image/$PROJECT_NAME.image eval --save "
-PharoCommandLineHandler forcePreferencesOmission: true. 
+PharoCommandLineHandler forcePreferencesOmission: true.
+Smalltalk at: #ZnClient ifPresent: [ :cls |
+    cls allInstances do: [ :each | [ each close ] on: Error do: [ ] ] ].
+Smalltalk at: #ZdcPluginSSLSession ifPresent: [ :cls |
+    cls allInstances do: [ :session |
+        [ session destroy ] on: Error, PrimitiveFailed do: [ ].
+        session instVarNamed: #handle put: nil ] ].
 OPVersion current: (OPVersion new 
-	repositoryName: '$REPOSITORY_NAME'; 
-	releaseName: '$VERSION';
-	githubWorkflowRunId: $RUN_ID;
-	buildDate: '$build_date' asDateAndTime;
-	yourself)"
+    repositoryName: '$REPOSITORY_NAME'; 
+    releaseName: '$VERSION';
+    githubWorkflowRunId: $RUN_ID;
+    buildDate: '$build_date' asDateAndTime;
+    yourself)"
 
 zip -qr $PROJECT_NAME-$PLATFORM-$VERSION.zip $package_dir
