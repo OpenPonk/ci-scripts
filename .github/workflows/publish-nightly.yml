@@ -60,6 +60,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-win.ps1
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -97,6 +98,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-linux.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -133,6 +135,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -286,7 +289,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "nightly"
           prerelease: true
-          title: "nightly"
+          title: "nightly-${{ github.run_started_at }}"
 
   upload-zip-win:
     needs: create-release

@@ -6,6 +6,8 @@ $PLATFORM=$Env:PLATFORM
 $VERSION=$Env:VERSION
 $RUN_ID=$Env:RUN_ID
 
+$build_date = if ($Env:BUILD_DATE) { $Env:BUILD_DATE } else { (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ") }
+
 $package_dir="$PROJECT_NAME-$PLATFORM"
 $vm_file_content=Get-Content $ci_build_dir/vm | Out-String
 $vm_dir=(($vm_file_content -replace '/[^/]*$','/pharo-vm') -replace '/c/','C:\') -replace '/','\'
@@ -43,7 +45,14 @@ Get-Content -Path "ci-scripts\.github\scripts\readmecommon.txt" | Add-Content -P
 
 echo "Saving OPVersion..."
 
-& $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'"
+& $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "
+PharoCommandLineHandler forcePreferencesOmission: true. 
+OPVersion current: (OPVersion new 
+    repositoryName: '$REPOSITORY_NAME'; 
+    releaseName: '$VERSION';
+    githubWorkflowRunId: $RUN_ID;
+    buildDate: '$build_date' asDateAndTime;
+    yourself)"
 
 echo "Packaging zip archive..."
 

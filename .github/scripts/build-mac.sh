@@ -6,6 +6,8 @@ ci_build_dir=$SMALLTALK_CI_BUILD
 package_dir="$PROJECT_NAME-$PLATFORM"
 vm_dir=`cat $SMALLTALK_CI_VM | sed 's|\(.*\)/.*|\1|'`/pharo-vm
 
+build_date=${BUILD_DATE:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+
 mkdir -p "$package_dir/image"
 
 ditto $vm_dir $package_dir
@@ -44,6 +46,13 @@ EOF
 
 cat "ci-scripts/.github/scripts/readmecommon.txt" >> "$package_dir/README.txt"
 
-$vm_dir/Pharo.app/Contents/MacOS/Pharo --headless $package_dir/image/$PROJECT_NAME.image eval --save "OPVersion currentWithRunId: $RUN_ID projectName: '$REPOSITORY_NAME'"
+$vm_dir/Pharo.app/Contents/MacOS/Pharo --headless $package_dir/image/$PROJECT_NAME.image eval --save "
+PharoCommandLineHandler forcePreferencesOmission: true. 
+OPVersion current: (OPVersion new 
+	repositoryName: '$REPOSITORY_NAME'; 
+	releaseName: '$VERSION';
+	githubWorkflowRunId: $RUN_ID;
+	buildDate: '$build_date' asDateAndTime;
+	yourself)"
 
 ditto -ck --keepParent --rsrc $package_dir $PROJECT_NAME-$PLATFORM-$VERSION.zip

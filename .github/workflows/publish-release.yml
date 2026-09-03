@@ -85,6 +85,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-linux.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -127,6 +128,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -169,6 +171,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ github.run_started_at }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
