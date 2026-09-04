@@ -6,7 +6,11 @@ $PLATFORM=$Env:PLATFORM
 $VERSION=$Env:VERSION
 $RUN_ID=$Env:RUN_ID
 
-$build_date = if ($Env:BUILD_DATE) { $Env:BUILD_DATE } else { (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ") }
+if ([string]::IsNullOrWhiteSpace($Env:BUILD_DATE)) {
+    Write-Error "ERROR: BUILD_DATE environment variable must be set and non-empty."
+    exit 1
+}
+$BUILD_DATE = $Env:BUILD_DATE
 
 $package_dir="$PROJECT_NAME-$PLATFORM"
 $vm_file_content=Get-Content $ci_build_dir/vm | Out-String
@@ -57,7 +61,7 @@ OPVersion current: (OPVersion new
     repositoryName: '$REPOSITORY_NAME'; 
     releaseName: '$VERSION';
     githubWorkflowRunId: $RUN_ID;
-    buildDate: '$build_date' asDateAndTime;
+    buildDate: '$BUILD_DATE' asDateAndTime;
     yourself)"
 
 echo "Packaging zip archive..."

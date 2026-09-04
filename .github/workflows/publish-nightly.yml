@@ -31,8 +31,27 @@ env:
   cache-name: zip-cache
 
 jobs:
+
+  init:
+    runs-on: ubuntu-latest
+    name: 'Initialize build environment'
+    outputs:
+      build_date: ${{ steps.set-date.outputs.build_date }}
+    steps:
+      - name: Generate, log and validate build date
+        id: set-date
+        shell: bash
+        run: |
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          if [[ ! "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]; then
+            echo "ERROR: Generated date '$DATE' is not in valid ISO 8601 format!"
+            exit 1
+          fi
+          echo "Generated UTC build date: $DATE"
+          echo "build_date=$DATE" >> "$GITHUB_OUTPUT"
   
   build-win:
+    needs: init
     runs-on: windows-latest
     env:
       PLATFORM: win
@@ -60,7 +79,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-win.ps1
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -69,6 +88,7 @@ jobs:
           enableCrossOsArchive: true
 
   build-linux:
+    needs: init
     runs-on: ubuntu-latest
     env:
       PLATFORM: linux
@@ -98,7 +118,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-linux.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -106,6 +126,7 @@ jobs:
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
 
   build-mac-intel:
+    needs: init
     runs-on: macos-15-intel
     env:
       PLATFORM: mac-intel
@@ -135,7 +156,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -143,6 +164,7 @@ jobs:
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
 
   build-mac-arm:
+    needs: init
     runs-on: macos-latest
     env:
       PLATFORM: mac-arm
@@ -172,6 +194,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
         uses: actions/cache/save@v4.2.2
         with:
@@ -247,7 +270,6 @@ jobs:
         if: steps.get-zip.outputs.cache-hit != 'true'
         run: exit 1
 
-
   save-stats:
     needs: [check-cache-win, check-cache-linux, check-cache-mac-intel, check-cache-mac-arm]
     runs-on: ubuntu-latest
@@ -275,9 +297,8 @@ jobs:
       - name: Save dl stats of last nightly build
         run: ci-scripts/.github/scripts/save-stats.sh
 
-
   create-release:
-    needs: save-stats
+    needs: [save-stats, init]
     runs-on: ubuntu-latest
     name: 'Re-create release'
     env:
@@ -289,7 +310,19 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "nightly"
           prerelease: true
-          title: "nightly-${{ github.run_started_at }}"
+          title: "nightly-${{ needs.init.outputs.build_date }}"
+      - name: Verify release title
+        shell: bash
+        run: |
+          echo "Verifying release title from GitHub API..."
+          RELEASE_NAME=$(curl -s -f -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/nightly" | jq -r .name)
+          echo "Release title returned by GitHub API: '$RELEASE_NAME'"
+          if [[ ! "$RELEASE_NAME" =~ ^nightly-2[0-9]{3}-[0-9]{2}-[0-9]{2}T ]]; then
+            echo "ERROR: Release title '$RELEASE_NAME' does not match expected pattern 'nightly-YYYY-...'!"
+            exit 1
+          fi
+          echo "Release title verified successfully."
 
   upload-zip-win:
     needs: create-release
@@ -451,6 +484,7 @@ jobs:
           echo "Dependent builds: enabled"
           echo "has_dependents=true" >> "$GITHUB_OUTPUT"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   build-dependent:
     needs: [create-dependent-matrix]
     runs-on: ubuntu-latest

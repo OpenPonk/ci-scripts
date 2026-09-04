@@ -6,7 +6,10 @@ ci_build_dir=$SMALLTALK_CI_BUILD
 package_dir="$PROJECT_NAME-$PLATFORM"
 vm_dir=`cat $SMALLTALK_CI_VM | sed 's|\(.*\)/.*|\1|'`/pharo-vm
 
-build_date=${BUILD_DATE:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+if [ -z "${BUILD_DATE:-}" ]; then
+    echo "ERROR: BUILD_DATE environment variable must be set and non-empty." >&2
+    exit 1
+fi
 
 mkdir -p "$package_dir/image"
 
@@ -58,7 +61,7 @@ OPVersion current: (OPVersion new
     repositoryName: '$REPOSITORY_NAME'; 
     releaseName: '$VERSION';
     githubWorkflowRunId: $RUN_ID;
-    buildDate: '$build_date' asDateAndTime;
+    buildDate: '$BUILD_DATE' asDateAndTime;
     yourself)"
 
 ditto -ck --keepParent --rsrc $package_dir $PROJECT_NAME-$PLATFORM-$VERSION.zip
