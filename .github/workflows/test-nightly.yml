@@ -37,13 +37,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
+      - name: Prepare scripts directory
+        run: mkdir ci-scripts
+      - name: Checkout scripts
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: OpenPonk/ci-scripts
+          path: ci-scripts
+      - name: Configure VM environment
+        shell: bash
+        run: |
+          echo "VM_DIR=$RUNNER_TEMP/pharo-vm" >> "$GITHUB_ENV"
+          echo "PHARO_VM=$RUNNER_TEMP/pharo-vm/pharo" >> "$GITHUB_ENV"
+      - name: Prepare patched Pharo VM
+        run: bash ci-scripts/.github/scripts/prepare-patched-pharo-vm.sh
       - name: Load SmalltalkCI environment
         uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
       - name: Prepare image and test
-        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
         timeout-minutes: 12
 
@@ -55,13 +69,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
+      - name: Prepare scripts directory
+        run: md ci-scripts
+      - name: Checkout scripts
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: OpenPonk/ci-scripts
+          path: ci-scripts
+      - name: Configure VM environment
+        shell: bash
+        run: |
+          echo "VM_DIR=$RUNNER_TEMP/pharo-vm" >> "$GITHUB_ENV"
+          echo "PHARO_VM=$RUNNER_TEMP/pharo-vm/pharo" >> "$GITHUB_ENV"
+      - name: Prepare patched Pharo VM
+        run: bash ci-scripts/.github/scripts/prepare-patched-pharo-vm.sh
+        shell: bash
       - name: Load SmalltalkCI environment
         uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
       - name: Prepare image and test
-        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
         timeout-minutes: 20
 
@@ -115,6 +144,7 @@ jobs:
           echo "Dependent builds: enabled"
           echo "has_dependents=true" >> "$GITHUB_OUTPUT"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   build-dependent:
     needs: [test-linux, test-win, create-dependent-matrix]
     runs-on: ubuntu-latest

@@ -13,8 +13,12 @@ if ([string]::IsNullOrWhiteSpace($Env:BUILD_DATE)) {
 $BUILD_DATE = $Env:BUILD_DATE
 
 $package_dir="$PROJECT_NAME-$PLATFORM"
-$vm_file_content=Get-Content $ci_build_dir/vm | Out-String
-$vm_dir=(($vm_file_content -replace '/[^/]*$','/pharo-vm') -replace '/c/','C:\') -replace '/','\'
+
+if ([string]::IsNullOrWhiteSpace($Env:VM_DIR)) {
+    Write-Error "ERROR: VM_DIR environment variable must be set and non-empty."
+    exit 1
+}
+$vm_dir = Join-Path $Env:VM_DIR "pharo-vm"
 
 echo "Preparing files and directories..."
 

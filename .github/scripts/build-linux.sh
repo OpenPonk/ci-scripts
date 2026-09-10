@@ -4,12 +4,17 @@ set -euxo pipefail
 
 ci_build_dir=$SMALLTALK_CI_BUILD
 package_dir="$PROJECT_NAME-$PLATFORM"
-vm_dir=`cat $SMALLTALK_CI_VM | sed 's|\(.*\)/.*|\1|'`/pharo-vm
 
 if [ -z "${BUILD_DATE:-}" ]; then
     echo "ERROR: BUILD_DATE environment variable must be set and non-empty." >&2
     exit 1
 fi
+
+if [ -z "${VM_DIR:-}" ]; then
+    echo "ERROR: VM_DIR environment variable must be set and non-empty." >&2
+    exit 1
+fi
+vm_dir="$VM_DIR/pharo-vm"
 
 mkdir -p "$package_dir/image"
 mkdir -p "$package_dir/pharo"

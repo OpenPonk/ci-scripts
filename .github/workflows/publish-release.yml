@@ -30,13 +30,21 @@ jobs:
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
+      - name: Configure VM environment
+        shell: bash
+        run: |
+          echo "VM_DIR=$RUNNER_TEMP/pharo-vm" >> "$GITHUB_ENV"
+          echo "PHARO_VM=$RUNNER_TEMP/pharo-vm/pharo" >> "$GITHUB_ENV"
+      - name: Prepare patched Pharo VM
+        run: bash ci-scripts/.github/scripts/prepare-patched-pharo-vm.sh
+        shell: bash
       - name: Load SmalltalkCI environment
         uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
       - name: Prepare image and test
-        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
         timeout-minutes: 20
       - name: Create zip
@@ -70,13 +78,20 @@ jobs:
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
+      - name: Configure VM environment
+        shell: bash
+        run: |
+          echo "VM_DIR=$RUNNER_TEMP/pharo-vm" >> "$GITHUB_ENV"
+          echo "PHARO_VM=$RUNNER_TEMP/pharo-vm/pharo" >> "$GITHUB_ENV"
+      - name: Prepare patched Pharo VM
+        run: bash ci-scripts/.github/scripts/prepare-patched-pharo-vm.sh
       - name: Load SmalltalkCI environment
         uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
       - name: Prepare image and test
-        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
         timeout-minutes: 12
       - name: Prepare zip script
