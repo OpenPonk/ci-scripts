@@ -83,6 +83,6 @@ jobs:
         with:
           workflow: Nightly
           repo: ${{ matrix.repository }}
-          ref: ${{ matrix.branch }}
+          ref: ${{ matrix.branch || 'master' }}
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           inputs: '{ "build-dependent": "${{ matrix.build-dependent }}" }'
