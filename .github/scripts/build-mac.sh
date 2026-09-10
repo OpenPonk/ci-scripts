@@ -50,7 +50,7 @@ EOF
 cat "ci-scripts/.github/scripts/readmecommon.txt" >> "$package_dir/README.txt"
 
 $vm_dir/Pharo.app/Contents/MacOS/Pharo --headless $package_dir/image/$PROJECT_NAME.image eval --save "
-PharoCommandLineHandler forcePreferencesOmission: true.
+PharoOptionsHandler shouldIgnorePreferences: true.
 Smalltalk at: #ZnClient ifPresent: [ :cls |
     cls allInstances do: [ :each | [ each close ] on: Error do: [ ] ] ].
 Smalltalk at: #ZdcPluginSSLSession ifPresent: [ :cls |

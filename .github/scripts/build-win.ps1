@@ -50,7 +50,7 @@ Get-Content -Path "ci-scripts\.github\scripts\readmecommon.txt" | Add-Content -P
 echo "Saving OPVersion..."
 
 & $vm_dir/PharoConsole.exe --headless $package_dir/image/$PROJECT_NAME.image eval --save "
-PharoCommandLineHandler forcePreferencesOmission: true.
+PharoOptionsHandler shouldIgnorePreferences: true.
 Smalltalk at: #ZnClient ifPresent: [ :cls |
     cls allInstances do: [ :each | [ each close ] on: Error do: [ ] ] ].
 Smalltalk at: #ZdcPluginSSLSession ifPresent: [ :cls |
