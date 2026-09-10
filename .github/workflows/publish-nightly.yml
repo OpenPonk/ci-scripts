@@ -58,16 +58,16 @@ jobs:
     name: 'Build Windows'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
       - name: Prepare scripts directory
         run: md ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
       - name: Load SmalltalkCI environment
-        uses: hpi-swa/setup-smalltalkCI@1.3.4
+        uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
@@ -81,7 +81,7 @@ jobs:
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
           BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
-        uses: actions/cache/save@v4.2.2
+        uses: actions/cache/save@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -95,16 +95,16 @@ jobs:
     name: 'Build Linux'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
       - name: Load SmalltalkCI environment
-        uses: hpi-swa/setup-smalltalkCI@1.3.4
+        uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
@@ -120,7 +120,7 @@ jobs:
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
           BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
-        uses: actions/cache/save@v4.2.2
+        uses: actions/cache/save@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -133,16 +133,16 @@ jobs:
     name: 'Build Mac Intel'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
       - name: Load SmalltalkCI environment
-        uses: hpi-swa/setup-smalltalkCI@1.3.4
+        uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
@@ -158,7 +158,7 @@ jobs:
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
           BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
-        uses: actions/cache/save@v4.2.2
+        uses: actions/cache/save@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -171,16 +171,16 @@ jobs:
     name: 'Build Mac ARM'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
       - name: Load SmalltalkCI environment
-        uses: hpi-swa/setup-smalltalkCI@1.3.4
+        uses: hpi-swa/setup-smalltalkCI@1.6.3
         id: smalltalkci
         with:
           smalltalk-image: Pharo64-${{ env.PHARO_VERSION }}
@@ -196,7 +196,7 @@ jobs:
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
           BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Cache zip
-        uses: actions/cache/save@v4.2.2
+        uses: actions/cache/save@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -210,7 +210,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -227,7 +227,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -244,7 +244,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -261,7 +261,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -278,17 +278,17 @@ jobs:
       PLATFORM: linux
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
       - name: Prepare scripts directory
         run: mkdir ci-scripts
       - name: Checkout scripts
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: OpenPonk/ci-scripts
           path: ci-scripts
@@ -333,7 +333,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -361,7 +361,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -388,7 +388,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -415,7 +415,7 @@ jobs:
     steps:
       - name: Get zip from cache
         id: get-zip
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
           key: ${{ github.run_id }}-${{ github.run_number }}_${{ env.PROJECT_NAME }}-${{ env.PLATFORM }}-${{ env.VERSION }}.zip
@@ -442,7 +442,7 @@ jobs:
       has_dependents: ${{ steps.set-matrix.outputs.has_dependents }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
 
       - name: Create dependent build matrix (or empty)
         id: set-matrix
@@ -494,7 +494,7 @@ jobs:
       matrix: ${{fromJson(needs.create-dependent-matrix.outputs.matrix)}}
     steps:
       - name: Start ${{ matrix.repository }} build
-        uses: benc-uk/workflow-dispatch@v1.2.4
+        uses: benc-uk/workflow-dispatch@v1.3.3
         with:
           workflow: Nightly
           repo: ${{ matrix.repository }}

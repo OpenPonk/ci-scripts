@@ -24,7 +24,7 @@ jobs:
       has_dependents: ${{ steps.set-matrix.outputs.has_dependents }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
 
       - name: Create dependent build matrix (or empty)
         id: set-matrix
@@ -75,7 +75,7 @@ jobs:
       matrix: ${{fromJson(needs.create-dependent-matrix.outputs.matrix)}}
     steps:
       - name: Start ${{ matrix.repository }} build
-        uses: benc-uk/workflow-dispatch@v1.2.4
+        uses: benc-uk/workflow-dispatch@v1.3.3
         with:
           workflow: Nightly
           repo: ${{ matrix.repository }}
