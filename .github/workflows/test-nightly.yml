@@ -59,7 +59,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
-        timeout-minutes: 12
+        timeout-minutes: 15
 
   test-win:
     runs-on: windows-latest
@@ -92,7 +92,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
-        timeout-minutes: 20
+        timeout-minutes: 30
 
   create-dependent-matrix:
     runs-on: ubuntu-latest

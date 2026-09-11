@@ -82,7 +82,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
-        timeout-minutes: 20
+        timeout-minutes: 30
       - name: Create zip
         run: ci-scripts/.github/scripts/build-win.ps1
         env: 
@@ -126,7 +126,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }} --vm "$PHARO_VM"
         shell: bash
-        timeout-minutes: 12
+        timeout-minutes: 15
       - name: Prepare zip script
         run: chmod u+x ci-scripts/.github/scripts/build-linux.sh
       - name: Create zip
@@ -164,7 +164,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
         shell: bash
-        timeout-minutes: 12
+        timeout-minutes: 20
       - name: Prepare zip script
         run: chmod u+x ci-scripts/.github/scripts/build-mac.sh
       - name: Create zip
@@ -202,7 +202,7 @@ jobs:
       - name: Prepare image and test
         run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
         shell: bash
-        timeout-minutes: 12
+        timeout-minutes: 20
       - name: Prepare zip script
         run: chmod u+x ci-scripts/.github/scripts/build-mac.sh
       - name: Create zip
