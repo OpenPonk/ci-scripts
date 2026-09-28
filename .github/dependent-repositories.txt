@@ -1,12 +1,1 @@
-{
-	"include" : [
-		{ "repository" : "OpenPonk/class-editor", "branch" : "master", "build-dependent" : true },
-		{ "repository" : "OpenPonk/borm-editor", "branch" : "master", "build-dependent" : false },
-		{ "repository" : "OpenPonk/petrinets", "branch" : "master", "build-dependent" : false },
-		{ "repository" : "OpenPonk/fsm-editor", "branch" : "master", "build-dependent" : false },
-		{ "repository" : "OpenPonk/BPMN", "branch" : "master", "build-dependent" : false },
-		{ "repository" : "OpenPonk/markov-chains", "branch" : "master", "build-dependent" : false },
-		{ "repository" : "OpenPonk/ERD", "branch" : "main", "build-dependent" : false },
-		{ "repository" : "OpenPonk/DEMO", "branch" : "main", "build-dependent" : false }
-	]
-}
+{	"include" : [		{ "repository" : "OpenPonk/synchronized-links", "branch" : "master", "build-dependent" : true },		{ "repository" : "OpenPonk/uml-metamodel", "branch" : "master", "build-dependent" : true },		{ "repository" : "OpenPonk/xml-dom-visitor", "branch" : "master", "build-dependent" : true },		{ "repository" : "OpenPonk/pharo-changes-builder", "branch" : "master", "build-dependent" : true }	]}
