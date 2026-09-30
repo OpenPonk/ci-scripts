@@ -13,9 +13,28 @@ env:
   VERSION: ${{ github.event.release.tag_name }}
   RUN_ID: ${{ github.run_id }}
   PHARO_VERSION: 14
-  
+
 jobs:
+  init:
+    runs-on: ubuntu-latest
+    name: 'Initialize build environment'
+    outputs:
+      build_date: ${{ steps.set-date.outputs.build_date }}
+    steps:
+      - name: Generate, log and validate build date
+        id: set-date
+        shell: bash
+        run: |
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          if [[ ! "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]; then
+            echo "ERROR: Generated date '$DATE' is not in valid ISO 8601 format!"
+            exit 1
+          fi
+          echo "Generated UTC build date: $DATE"
+          echo "build_date=$DATE" >> "$GITHUB_OUTPUT"
+
   build-win:
+    needs: init
     runs-on: windows-latest
     env:
       PLATFORM: win
@@ -51,6 +70,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-win.ps1
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -64,6 +84,7 @@ jobs:
           asset_content_type: application/zip
 
   build-linux:
+    needs: init
     runs-on: ubuntu-latest
     env:
       PLATFORM: linux
@@ -100,7 +121,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-linux.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -114,6 +135,7 @@ jobs:
           asset_content_type: application/zip
 
   build-mac-intel:
+    needs: init
     runs-on: macos-15-intel
     env:
       PLATFORM: mac-intel
@@ -143,7 +165,7 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -157,6 +179,7 @@ jobs:
           asset_content_type: application/zip
 
   build-mac-arm:
+    needs: init
     runs-on: macos-latest
     env:
       PLATFORM: mac-arm
@@ -186,11 +209,11 @@ jobs:
         run: ci-scripts/.github/scripts/build-mac.sh
         env: 
           ACTIONS_READ_ACCESS_TOKEN: ${{ secrets.ACTIONS_READ_ACCESS_TOKEN }}
-          BUILD_DATE: ${{ github.run_started_at }}
+          BUILD_DATE: ${{ needs.init.outputs.build_date }}
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
-      - name: Upload Intel zip
+      - name: Upload zip
         id: upload-zip
         uses: actions/upload-release-asset@v1.0.2
         with:
