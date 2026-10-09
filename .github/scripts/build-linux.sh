@@ -23,6 +23,12 @@ cp $ci_build_dir/TravisCI.image $package_dir/image/$PROJECT_NAME.image
 cp $ci_build_dir/TravisCI.changes $package_dir/image/$PROJECT_NAME.changes
 cp $ci_build_dir/*.sources $package_dir/image
 
+if [[ "$REPOSITORY_NAME" == "class-editor" || "$REPOSITORY_NAME" == "plugins" ]]; then
+    echo "Packaging specifications for $REPOSITORY_NAME..."
+    git clone --depth 1 https://github.com/OpenPonk/specs-repository.git "$package_dir/image/specs"
+    rm -rf "$package_dir/image/specs/.git"
+fi
+
 cp -r $vm_dir/bin $package_dir/pharo/bin
 cp -r $vm_dir/lib $package_dir/pharo/lib
 
